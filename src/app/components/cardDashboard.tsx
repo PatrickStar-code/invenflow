@@ -1,14 +1,6 @@
 import { IconArrowDown, IconArrowUp, IconMinus } from '@tabler/icons-react'
 import React from 'react'
-
-type cardDashboardProps = {
-  title: string
-  count: number
-  percent: number
-  icon: React.ReactNode
-  status: 'Positive' | 'Negative' | 'Neutral'
-  backgroundColor: string
-}
+import { cardDashboardProps } from '../(Login)/Dashboard/page'
 
 export default function CardDashboard({
   title,

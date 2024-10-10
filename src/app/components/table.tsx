@@ -33,13 +33,26 @@ export function TabelaCard({ title, headers, data }: TabelaCardProps) {
           {data.map((row, rowIndex) => (
             <tr key={rowIndex} className="hover:bg-gray-100">
               {row.map((cell, cellIndex) => (
-                <td key={cellIndex} className="p-3 border-b border-gray-300">
+                <td
+                  key={cellIndex}
+                  className="p-3 border-b border-l border-gray-300"
+                >
                   {cell}
                 </td>
               ))}
             </tr>
           ))}
         </tbody>
+        <tfoot>
+          <tr>
+            <td
+              colSpan={headers.length}
+              className="p-3 border-b  text-center text-blue-500 hover:bg-gray-100 hover:text-blue-700 cursor-pointer border-gray-300"
+            >
+              Ver Mais
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </motion.div>
   )

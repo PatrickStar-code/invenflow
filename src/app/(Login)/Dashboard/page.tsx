@@ -3,6 +3,15 @@ import CardDashboard from '@/app/components/cardDashboard'
 import { TabelaCard } from '@/app/components/table'
 import { IconUserBolt } from '@tabler/icons-react'
 
+export type cardDashboardProps = {
+  title: string
+  count: number
+  percent: number
+  icon: React.ReactNode
+  status: 'Positive' | 'Negative' | 'Neutral'
+  backgroundColor: string
+}
+
 const produtosHeaders = ['Nome', 'Quantidade', 'Valor']
 const produtosData: string[][] = [
   ['Produto 1', '5', 'R$ 10,00'],
@@ -15,50 +24,64 @@ const notificacoesData: string[][] = [
   ['09/10/2024', 'Produto 2 foi adicionado ao estoque.'],
 ]
 
+const CardDashboardContent: cardDashboardProps[] = [
+  {
+    title: 'Estoque Total',
+    count: 10,
+    percent: 50,
+    icon: (
+      <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+    ),
+    status: 'Neutral',
+    backgroundColor: 'bg-neutral-100 dark:bg-neutral-800',
+  },
+  {
+    title: 'Produtos em Estoque Crítico',
+    count: 10,
+    percent: 50,
+    icon: (
+      <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+    ),
+    status: 'Neutral',
+    backgroundColor: 'bg-neutral-100 dark:bg-neutral-800',
+  },
+  {
+    title: 'Pedidos Recentes',
+    count: 10,
+    percent: 50,
+    icon: (
+      <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+    ),
+    status: 'Neutral',
+    backgroundColor: 'bg-neutral-100 dark:bg-neutral-800',
+  },
+  {
+    title: 'Total de usuários',
+    count: 10,
+    percent: 50,
+    icon: (
+      <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+    ),
+    status: 'Neutral',
+    backgroundColor: 'bg-neutral-100 dark:bg-neutral-800',
+  },
+]
+
 export default function Dashboard() {
   return (
     <main className="flex-1 p-6 bg-white">
       <div className="grid grid-cols-1 gap-5 mt-6 sm:grid-cols-2 lg:grid-cols-4">
-        <CardDashboard
-          title="Estoque Total"
-          count={10}
-          percent={50}
-          icon={
-            <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-          }
-          status="Neutral"
-          backgroundColor="bg-neutral-100 dark:bg-neutral-800"
-        />
-        <CardDashboard
-          title="Produtos em Estoque Crítico"
-          count={10}
-          percent={50}
-          icon={
-            <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-          }
-          status="Neutral"
-          backgroundColor="bg-neutral-100 dark:bg-neutral-800"
-        />
-        <CardDashboard
-          title="Pedidos Recentes"
-          count={10}
-          percent={50}
-          icon={
-            <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-          }
-          status="Neutral"
-          backgroundColor="bg-neutral-100 dark:bg-neutral-800"
-        />
-        <CardDashboard
-          title="Total de usuários"
-          count={10}
-          percent={50}
-          icon={
-            <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-          }
-          status="Neutral"
-          backgroundColor="bg-neutral-100 dark:bg-neutral-800"
-        />
+        {CardDashboardContent.map((card) => (
+          <CardDashboard
+            key={card.title}
+            title={card.title}
+            count={card.count}
+            percent={card.percent}
+            icon={card.icon}
+            status={card.status}
+            backgroundColor={card.backgroundColor}
+          />
+        ))}
       </div>
 
       {/* Gráficos lado a lado */}
