@@ -67,6 +67,13 @@ const CardDashboardContent: cardDashboardProps[] = [
   },
 ]
 
+export type ColumnsProps<T> = {
+  title: string
+  dataIndex: keyof T
+  type: string
+  formatToLocale?: boolean
+}
+
 export default function Dashboard() {
   return (
     <main className="flex-1 p-6 bg-white">

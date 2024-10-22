@@ -1,8 +1,11 @@
 'use client'
 import GenericTable from '@/app/components/genericTable'
-import React from 'react'
+import React, { useState } from 'react'
+import { ColumnsProps } from '../page'
+// import * as XLSX from 'xlsx'
 
-interface Product {
+// Definindo o tipo de produto
+export interface Product {
   id: number
   name: string
   stock: number
@@ -12,6 +15,7 @@ interface Product {
   category: string
 }
 
+// Produtos de exemplo
 const products: Product[] = [
   {
     id: 1,
@@ -22,29 +26,48 @@ const products: Product[] = [
     supplier: 'Fornecedor X',
     category: 'Categoria 1',
   },
-  {
-    id: 2,
-    name: 'Produto B',
-    stock: 5,
-    costPrice: 30.0,
-    salePrice: 45.0,
-    supplier: 'Fornecedor Y',
-    category: 'Categoria 2',
-  },
   // Adicione mais produtos conforme necessário
 ]
 
 // Definindo as colunas com o tipo correto
-const columns: Array<{ title: string; dataIndex: keyof Product }> = [
-  { title: 'Nome', dataIndex: 'name' },
-  { title: 'Estoque', dataIndex: 'stock' },
-  { title: 'Preço de Custo', dataIndex: 'costPrice' },
-  { title: 'Preço de Venda', dataIndex: 'salePrice' },
-  { title: 'Fornecedor', dataIndex: 'supplier' },
-  { title: 'Categoria', dataIndex: 'category' },
+const columns: ColumnsProps<Product>[] = [
+  { title: 'Nome', dataIndex: 'name', type: 'string' },
+  {
+    title: 'Estoque',
+    dataIndex: 'stock',
+    type: 'number',
+  },
+  {
+    title: 'Preço de Custo',
+    dataIndex: 'costPrice',
+    type: 'number',
+    formatToLocale: true,
+  },
+  {
+    title: 'Preço de Venda',
+    dataIndex: 'salePrice',
+    type: 'number',
+    formatToLocale: true,
+  },
+  {
+    title: 'Fornecedor',
+    dataIndex: 'supplier',
+    type: 'string',
+  },
+  {
+    title: 'Categoria',
+    dataIndex: 'category',
+    type: 'string',
+  },
 ]
 
 export default function ProdutosPage() {
+  const [nameTable, setNameTable] = useState('Produtos')
+
+  const changeTableName = (name: string) => {
+    setNameTable(name)
+  }
+
   const handleAdd = () => {
     console.log('Adicionar produto')
   }
@@ -53,12 +76,12 @@ export default function ProdutosPage() {
     console.log(`Deletar produto com id: ${id}`)
   }
 
-  const handleImport = () => {
-    console.log('Importar produtos')
-  }
-
   const handleEdit = (id: number) => {
     console.log(`Editar produto com id: ${id}`)
+  }
+
+  const handleImport = () => {
+    console.log('Importar produtos')
   }
 
   const handleExport = () => {
@@ -68,6 +91,7 @@ export default function ProdutosPage() {
   return (
     <main className="flex-1 bg-white">
       <GenericTable
+        title={nameTable}
         data={products}
         columns={columns}
         onAdd={handleAdd}
@@ -75,6 +99,7 @@ export default function ProdutosPage() {
         onImport={handleImport}
         onEdit={handleEdit}
         onExport={handleExport}
+        changeTableName={changeTableName}
       />
     </main>
   )
