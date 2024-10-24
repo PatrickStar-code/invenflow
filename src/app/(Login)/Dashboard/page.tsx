@@ -4,7 +4,7 @@ import { TabelaCard } from '@/app/components/table'
 import { IconUserBolt } from '@tabler/icons-react'
 
 export type cardDashboardProps = {
-  title: string
+  header: string
   count: number
   percent: number
   icon: React.ReactNode
@@ -26,7 +26,7 @@ const notificacoesData: string[][] = [
 
 const CardDashboardContent: cardDashboardProps[] = [
   {
-    title: 'Estoque Total',
+    header: 'Estoque Total',
     count: 10,
     percent: 50,
     icon: (
@@ -36,7 +36,7 @@ const CardDashboardContent: cardDashboardProps[] = [
     backgroundColor: 'bg-neutral-100 dark:bg-neutral-800',
   },
   {
-    title: 'Produtos em Estoque Crítico',
+    header: 'Produtos em Estoque Crítico',
     count: 10,
     percent: 50,
     icon: (
@@ -46,7 +46,7 @@ const CardDashboardContent: cardDashboardProps[] = [
     backgroundColor: 'bg-neutral-100 dark:bg-neutral-800',
   },
   {
-    title: 'Pedidos Recentes',
+    header: 'Pedidos Recentes',
     count: 10,
     percent: 50,
     icon: (
@@ -56,7 +56,7 @@ const CardDashboardContent: cardDashboardProps[] = [
     backgroundColor: 'bg-neutral-100 dark:bg-neutral-800',
   },
   {
-    title: 'Total de usuários',
+    header: 'Total de usuários',
     count: 10,
     percent: 50,
     icon: (
@@ -68,8 +68,8 @@ const CardDashboardContent: cardDashboardProps[] = [
 ]
 
 export type ColumnsProps<T> = {
-  title: string
-  dataIndex: keyof T
+  header: string
+  key: keyof T
   type: string
   formatToLocale?: boolean
 }
@@ -80,8 +80,8 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 gap-5 mt-6 sm:grid-cols-2 lg:grid-cols-4">
         {CardDashboardContent.map((card) => (
           <CardDashboard
-            key={card.title}
-            title={card.title}
+            key={card.header}
+            header={card.header}
             count={card.count}
             percent={card.percent}
             icon={card.icon}

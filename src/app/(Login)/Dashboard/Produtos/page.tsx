@@ -2,7 +2,7 @@
 import GenericTable from '@/app/components/genericTable'
 import React, { useState } from 'react'
 import { ColumnsProps } from '../page'
-// import * as XLSX from 'xlsx'
+import { useCrud } from '@/app/hooks/useCrud'
 
 // Definindo o tipo de produto
 export interface Product {
@@ -31,32 +31,32 @@ const products: Product[] = [
 
 // Definindo as colunas com o tipo correto
 const columns: ColumnsProps<Product>[] = [
-  { title: 'Nome', dataIndex: 'name', type: 'string' },
+  { header: 'Nome', key: 'name', type: 'string' },
   {
-    title: 'Estoque',
-    dataIndex: 'stock',
+    header: 'Estoque',
+    key: 'stock',
     type: 'number',
   },
   {
-    title: 'Preço de Custo',
-    dataIndex: 'costPrice',
-    type: 'number',
-    formatToLocale: true,
-  },
-  {
-    title: 'Preço de Venda',
-    dataIndex: 'salePrice',
+    header: 'Preço de Custo',
+    key: 'costPrice',
     type: 'number',
     formatToLocale: true,
   },
   {
-    title: 'Fornecedor',
-    dataIndex: 'supplier',
+    header: 'Preço de Venda',
+    key: 'salePrice',
+    type: 'number',
+    formatToLocale: true,
+  },
+  {
+    header: 'Fornecedor',
+    key: 'supplier',
     type: 'string',
   },
   {
-    title: 'Categoria',
-    dataIndex: 'category',
+    header: 'Categoria',
+    key: 'category',
     type: 'string',
   },
 ]
@@ -67,38 +67,14 @@ export default function ProdutosPage() {
   const changeTableName = (name: string) => {
     setNameTable(name)
   }
-
-  const handleAdd = () => {
-    console.log('Adicionar produto')
-  }
-
-  const handleDelete = (id: number) => {
-    console.log(`Deletar produto com id: ${id}`)
-  }
-
-  const handleEdit = (id: number) => {
-    console.log(`Editar produto com id: ${id}`)
-  }
-
-  const handleImport = () => {
-    console.log('Importar produtos')
-  }
-
-  const handleExport = () => {
-    console.log('Exportar produtos')
-  }
+  useCrud()
 
   return (
     <main className="flex-1 bg-white">
-      <GenericTable
+      <GenericTable<Product>
         title={nameTable}
         data={products}
         columns={columns}
-        onAdd={handleAdd}
-        onDelete={handleDelete}
-        onImport={handleImport}
-        onEdit={handleEdit}
-        onExport={handleExport}
         changeTableName={changeTableName}
       />
     </main>

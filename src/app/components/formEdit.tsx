@@ -11,18 +11,18 @@ export default function FormEdit<T>({ columns = [], item }: FormEditProps<T>) {
     <form>
       <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
         {columns.map((col) => {
-          const value = item?.[col.dataIndex as keyof T]
+          const value = item?.[col.key as keyof T]
 
           return (
-            <div key={col.dataIndex as string}>
+            <div key={col.key as string}>
               <label
                 className="text-black dark:text-gray-200"
-                htmlFor={col.dataIndex as string}
+                htmlFor={col.key as string}
               >
-                {col.title}
+                {col.header}
               </label>
               <input
-                id={col.dataIndex as string}
+                id={col.key as string}
                 defaultValue={
                   typeof value === 'string' ||
                   typeof value === 'number' ||

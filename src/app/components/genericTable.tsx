@@ -1,4 +1,4 @@
-'use client'
+import React from 'react'
 import {
   IconFileImport,
   IconPlus,
@@ -10,17 +10,13 @@ import { Modal, ModalTrigger } from './ui/animated-modal'
 import ModalPreset from './modal'
 import { UseFormater } from '../hooks/useFormater'
 import { ColumnsProps } from '../(Login)/Dashboard/page'
+import { useCrud } from '../hooks/useCrud'
 
 // Interface genérica com a propriedade 'id'
 interface GenericTableProps<T> {
   data: T[] // Dados genéricos
   columns: ColumnsProps<T>[] // Colunas genéricas com base em T
   title: string
-  onAdd: () => void // Função para adicionar item
-  onDelete: (id: number) => void // Função para deletar item
-  onImport: () => void // Função para importar dados
-  onEdit: (id: number) => void // Função para editar item
-  onExport: () => void // Função para exportar dados
   changeTableName: (name: string) => void
 }
 
@@ -29,12 +25,23 @@ export default function GenericTable<T extends { id: number }>({
   columns,
   ...props
 }: GenericTableProps<T>) {
-  // Função para formatar os valores dentro do próprio componente
+  const { handleImport } = useCrud<T>()
+
   const formatValue = (value: unknown, col: ColumnsProps<T>) => {
     if (col.formatToLocale && typeof value === 'number') {
-      return UseFormater(value) // Chama o hook useFormater
+      return UseFormater(value) || '0,00'
     }
     return String(value)
+  }
+
+  const handleFileUpload = async (file: File) => {
+    try {
+      await handleImport(file, columns)
+      // Aqui você pode adicionar lógica adicional após a importação bem-sucedida, como atualização de estado ou notificação
+    } catch (error) {
+      console.error('Erro ao importar o arquivo:', error)
+      // Aqui você pode adicionar lógica para lidar com o erro, como mostrar uma notificação
+    }
   }
 
   return (
@@ -54,6 +61,7 @@ export default function GenericTable<T extends { id: number }>({
               mainText="Importe Aqui Seu Arquivo Excel"
               isImport={true}
               columns={columns}
+              onImport={handleFileUpload} // Passa a função assíncrona
             />
           </Modal>
           <Modal>
@@ -83,10 +91,10 @@ export default function GenericTable<T extends { id: number }>({
             <tr>
               {columns.map((col) => (
                 <th
-                  key={col.title}
+                  key={col.header}
                   className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
                 >
-                  {col.title}
+                  {col.header}
                 </th>
               ))}
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
@@ -105,10 +113,10 @@ export default function GenericTable<T extends { id: number }>({
               >
                 {columns.map((col) => (
                   <td
-                    key={col.dataIndex as string}
+                    key={col.key as string}
                     className="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
                   >
-                    {formatValue(item[col.dataIndex], col)}
+                    {formatValue(item[col.key], col)}
                   </td>
                 ))}
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 flex">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { ModalBody, ModalContent } from './ui/animated-modal'
+import { CloseButton, ModalBody, ModalContent } from './ui/animated-modal'
 import { FileUpload } from './ui/file-upload'
 import FormAdd from './formAdd'
 import { ColumnsProps } from '../(Login)/Dashboard/page'
@@ -14,6 +14,7 @@ type ModalContextType<T> = {
   isEdit?: boolean
   columns: ColumnsProps<T>[]
   item?: T
+  onImport?: (file: File) => Promise<void>
 }
 
 export default function ModalPreset<T>(props: ModalContextType<T>) {
@@ -39,7 +40,7 @@ export default function ModalPreset<T>(props: ModalContextType<T>) {
             <div className="max-w-md mx-auto rounded-lg overflow-hidden md:max-w-xl">
               <div className="md:flex">
                 <div className="w-full p-3">
-                  <FileUpload />
+                  <FileUpload onImport={props.onImport} />
                 </div>
               </div>
             </div>
@@ -89,12 +90,12 @@ export default function ModalPreset<T>(props: ModalContextType<T>) {
                 </p>
               </div>
               <div className="p-3 mt-2 text-center space-x-4 md:block">
-                <button className="mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-full hover:shadow-lg hover:bg-gray-100">
+                <CloseButton className=" mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-full hover:shadow-lg hover:bg-gray-100">
                   Cancel
-                </button>
-                <button className="mb-2 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600">
+                </CloseButton>
+                <CloseButton className="mb-2 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600">
                   Delete
-                </button>
+                </CloseButton>
               </div>
             </div>
           )}

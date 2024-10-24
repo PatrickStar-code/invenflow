@@ -190,9 +190,19 @@ const Overlay = ({ className }: { className?: string }) => {
   )
 }
 
-export const CloseButton = ({ children }: { children: ReactNode }) => {
+export const CloseButton = ({
+  children,
+  className,
+}: {
+  children: ReactNode
+  className?: string
+}) => {
   const { setOpen } = useModal()
-  return <div onClick={() => setOpen(false)}>{children}</div>
+  return (
+    <button onClick={() => setOpen(false)} className={className}>
+      {children}
+    </button>
+  )
 }
 
 const CloseIcon = () => {
