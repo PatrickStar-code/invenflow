@@ -1,36 +1,12 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+Aqui está uma sugestão para a descrição do seu projeto:
 
-First, run the development server:
+Descrição do Projeto
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Este projeto é uma aplicação de teste desenvolvida para explorar e validar o uso da biblioteca excel.js em conjunto com TypeScript, focando na manipulação de arquivos Excel e na implementação de tipagem genérica. O objetivo principal é experimentar funcionalidades de importação e exportação de dados em formato Excel, além de garantir que a tipagem genérica permita flexibilidade e segurança ao lidar com diferentes estruturas de dados.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Funcionalidades principais:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Importação e Exportação de Dados: Utilização de excel.js para ler e salvar dados em arquivos Excel.
+Tipagem Genérica em TypeScript: Estrutura do código com tipos genéricos para possibilitar o uso reutilizável e seguro de componentes com diferentes formatos de dados.
+Este projeto serve como base para práticas avançadas com Excel em JavaScript/TypeScript, sendo uma referência para futuras implementações que exigem manipulação de planilhas e dados tipados.
