@@ -1,19 +1,8 @@
 import { ColumnsProps } from '../(Login)/Dashboard/page'
 import { Workbook } from 'exceljs'
+import { saveAs } from 'file-saver'
 
-export function useCrud<T>() {
-  const handleAdd = () => {
-    console.log('Adicionar produto')
-  }
-
-  const handleDelete = (id: number) => {
-    console.log(`Deletar produto com id: ${id}`)
-  }
-
-  const handleEdit = (id: number) => {
-    console.log(`Editar produto com id: ${id}`)
-  }
-
+export function useExcel<T>() {
   const handleImport = async (file: File, columns?: ColumnsProps<T>[]) => {
     try {
       console.log(file) // Verifica se o arquivo é recebido corretamente
@@ -104,14 +93,45 @@ export function useCrud<T>() {
     }
   }
 
-  const handleExport = () => {
-    console.log('Exportar produtos')
-  }
+  const handleExport = async (
+    data: T[],
+    columns: ColumnsProps<T>[],
+    fileName: string = 'export.xlsx',
+  ) => {
+    try {
+      const workbook = new Workbook()
+      const sheet = workbook.addWorksheet('Dados Exportados')
 
+      // Adiciona cabeçalhos
+      const headers = columns.map((col) => col.header)
+      sheet.addRow(headers)
+
+      // Adiciona dados
+      data.forEach((item) => {
+        const row = columns.map((col) => item[col.key as keyof T])
+        sheet.addRow(row)
+      })
+
+      // Configura largura das colunas
+      columns.forEach((col, index) => {
+        const headerLength = col.header.length
+        sheet.getColumn(index + 1).width = Math.max(headerLength, 15) // Define largura mínima de 15
+      })
+
+      // Gera o arquivo Excel
+      const buffer = await workbook.xlsx.writeBuffer()
+
+      // Salva o arquivo utilizando file-saver
+      const blob = new Blob([buffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      })
+      saveAs(blob, fileName)
+      console.log('Arquivo exportado com sucesso:', fileName)
+    } catch (error) {
+      console.error('Erro ao exportar o arquivo Excel:', error)
+    }
+  }
   return {
-    handleAdd,
-    handleDelete,
-    handleEdit,
     handleImport,
     handleExport,
   }

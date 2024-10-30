@@ -2,6 +2,7 @@
 import { cn } from '@/lib/utils'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, {
+  ButtonHTMLAttributes,
   ReactNode,
   createContext,
   useContext,
@@ -190,13 +191,12 @@ const Overlay = ({ className }: { className?: string }) => {
   )
 }
 
-export const CloseButton = ({
-  children,
-  className,
-}: {
+type CloseButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode
   className?: string
-}) => {
+}
+
+export const CloseButton = ({ children, className }: CloseButtonProps) => {
   const { setOpen } = useModal()
   return (
     <button onClick={() => setOpen(false)} className={className}>

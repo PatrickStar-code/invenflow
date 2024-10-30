@@ -10,7 +10,7 @@ import { Modal, ModalTrigger } from './ui/animated-modal'
 import ModalPreset from './modal'
 import { UseFormater } from '../hooks/useFormater'
 import { ColumnsProps } from '../(Login)/Dashboard/page'
-import { useCrud } from '../hooks/useCrud'
+import { useExcel } from '../hooks/useExcel'
 
 // Interface genérica com a propriedade 'id'
 interface GenericTableProps<T> {
@@ -18,6 +18,9 @@ interface GenericTableProps<T> {
   columns: ColumnsProps<T>[] // Colunas genéricas com base em T
   title: string
   changeTableName: (name: string) => void
+  addData?: (data: T) => void
+  deleteData?: (id: number) => void
+  editData?: (data: T, id: number) => void
 }
 
 export default function GenericTable<T extends { id: number }>({
@@ -25,7 +28,11 @@ export default function GenericTable<T extends { id: number }>({
   columns,
   ...props
 }: GenericTableProps<T>) {
-  const { handleImport } = useCrud<T>()
+  const { handleImport, handleExport } = useExcel<T>()
+
+  const ExportExcel = async () => {
+    await handleExport(data, columns)
+  }
 
   const formatValue = (value: unknown, col: ColumnsProps<T>) => {
     if (col.formatToLocale && typeof value === 'number') {
@@ -37,10 +44,8 @@ export default function GenericTable<T extends { id: number }>({
   const handleFileUpload = async (file: File) => {
     try {
       await handleImport(file, columns)
-      // Aqui você pode adicionar lógica adicional após a importação bem-sucedida, como atualização de estado ou notificação
     } catch (error) {
       console.error('Erro ao importar o arquivo:', error)
-      // Aqui você pode adicionar lógica para lidar com o erro, como mostrar uma notificação
     }
   }
 
@@ -72,9 +77,13 @@ export default function GenericTable<T extends { id: number }>({
               mainText="Adicione Aqui Seu Registro"
               isAdd={true}
               columns={columns}
+              addData={props.addData}
             />
           </Modal>
-          <button className="flex items-center px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition duration-200">
+          <button
+            onClick={ExportExcel}
+            className="flex items-center px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition duration-200"
+          >
             <IconFileImport className="w-5 h-5 mr-2" /> Exportar
           </button>
         </div>
@@ -129,6 +138,7 @@ export default function GenericTable<T extends { id: number }>({
                       isEdit={true}
                       columns={columns}
                       item={item}
+                      editData={props.editData}
                     />
                   </Modal>
                   <Modal>

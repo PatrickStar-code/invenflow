@@ -2,7 +2,6 @@
 import GenericTable from '@/app/components/genericTable'
 import React, { useState } from 'react'
 import { ColumnsProps } from '../page'
-import { useCrud } from '@/app/hooks/useCrud'
 
 // Definindo o tipo de produto
 export interface Product {
@@ -14,20 +13,6 @@ export interface Product {
   supplier: string
   category: string
 }
-
-// Produtos de exemplo
-const products: Product[] = [
-  {
-    id: 1,
-    name: 'Produto A',
-    stock: 10,
-    costPrice: 15.0,
-    salePrice: 25.0,
-    supplier: 'Fornecedor X',
-    category: 'Categoria 1',
-  },
-  // Adicione mais produtos conforme necessário
-]
 
 // Definindo as colunas com o tipo correto
 const columns: ColumnsProps<Product>[] = [
@@ -63,11 +48,40 @@ const columns: ColumnsProps<Product>[] = [
 
 export default function ProdutosPage() {
   const [nameTable, setNameTable] = useState('Produtos')
+  const [products, setProducts] = useState<Product[]>([
+    {
+      id: 1,
+      name: 'Produto A',
+      stock: 10,
+      costPrice: 15.0,
+      salePrice: 25.0,
+      supplier: 'Fornecedor X',
+      category: 'Categoria 1',
+    },
+  ])
+
+  const addProduct = (product: Product) => {
+    setProducts([...products, product])
+  }
 
   const changeTableName = (name: string) => {
     setNameTable(name)
   }
-  useCrud()
+
+  const EditProduct = (product: Product, id: number) => {
+    const newProducts = products.map((p) => {
+      if (p.id === id) {
+        return product
+      }
+      return p
+    })
+    setProducts(newProducts)
+  }
+
+  const DeleteProduct = (id: number) => {
+    const newProducts = products.filter((p) => p.id !== id)
+    setProducts(newProducts)
+  }
 
   return (
     <main className="flex-1 bg-white">
@@ -76,6 +90,9 @@ export default function ProdutosPage() {
         data={products}
         columns={columns}
         changeTableName={changeTableName}
+        addData={addProduct}
+        editData={EditProduct}
+        deleteData={DeleteProduct}
       />
     </main>
   )

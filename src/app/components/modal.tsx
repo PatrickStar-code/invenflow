@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { CloseButton, ModalBody, ModalContent } from './ui/animated-modal'
+import { ModalBody, ModalContent } from './ui/animated-modal'
 import { FileUpload } from './ui/file-upload'
 import FormAdd from './formAdd'
 import { ColumnsProps } from '../(Login)/Dashboard/page'
 import FormEdit from './formEdit'
+import FormDelete from './formDelete'
 
 type ModalContextType<T> = {
   mainText?: string
@@ -14,10 +15,15 @@ type ModalContextType<T> = {
   isEdit?: boolean
   columns: ColumnsProps<T>[]
   item?: T
+  addData?: (data: T) => void
   onImport?: (file: File) => Promise<void>
+  editData?: (data: T, id: number) => void
+  deleteData?: (id: number) => void
 }
 
-export default function ModalPreset<T>(props: ModalContextType<T>) {
+export default function ModalPreset<T extends { id: number }>(
+  props: ModalContextType<T>,
+) {
   const [isClient, setIsClient] = useState(false)
   const [modalRoot, setModalRoot] = useState<Element | null>(null)
 
@@ -48,60 +54,22 @@ export default function ModalPreset<T>(props: ModalContextType<T>) {
 
           {props.isAdd && (
             <div className="max-w-md mx-auto rounded-lg overflow-hidden md:max-w-xl">
-              <FormAdd columns={props.columns} />
+              <FormAdd columns={props.columns} addData={props.addData} />
             </div>
           )}
 
           {props.isDelete && (
-            <div className="max-w-sm mx-auto h-96 mt-4">
-              {' '}
-              <div className="text-center p-8 flex-auto justify-center">
-                {' '}
-                {/* Aumenta o preenchimento */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4 -m-1 flex items-center text-red-500 mx-auto"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  ></path>
-                </svg>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-16 h-16 flex items-center text-red-500 mx-auto"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <h2 className="text-xl font-bold py-4">Tem Certeza?</h2>
-                <p className="text-md text-gray-500 px-8">
-                  Realmente Deseja Excluir o Registro?
-                </p>
-              </div>
-              <div className="p-3 mt-2 text-center space-x-4 md:block">
-                <CloseButton className=" mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-full hover:shadow-lg hover:bg-gray-100">
-                  Cancel
-                </CloseButton>
-                <CloseButton className="mb-2 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600">
-                  Delete
-                </CloseButton>
-              </div>
+            <div className="max-w-md mx-auto rounded-lg overflow-hidden md:max-w-xl">
+              <FormDelete deleteData={props.deleteData} id={props.item?.id} />
             </div>
           )}
           {props.isEdit && (
             <div className="max-w-md mx-auto rounded-lg overflow-hidden md:max-w-xl">
-              <FormEdit columns={props.columns} item={props.item} />
+              <FormEdit
+                columns={props.columns}
+                item={props.item}
+                editData={props.editData}
+              />
             </div>
           )}
         </div>
